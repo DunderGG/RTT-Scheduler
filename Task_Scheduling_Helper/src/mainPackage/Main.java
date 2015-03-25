@@ -1,5 +1,7 @@
 package mainPackage;
 
+import java.util.ArrayList;
+
 import javax.swing.UIManager;
 
 /*
@@ -15,7 +17,6 @@ import javax.swing.UIManager;
 
 public class Main
 {
-
 	public static void main(String[] args)
 	{
 		//Set the look and feel of the program to be the same as system default
@@ -28,7 +29,16 @@ public class Main
 			e1.printStackTrace();
 		}
 
-		new GUI();
+		GUI gui = new GUI();
+		
+
+		gui.addTaskToCB(new Task("Task 1"));
+		gui.addTaskToCB(new Task("Task 2", 200));
+		gui.addTaskToCB(new Task("Task 3", 300, 300));
+		
+		new Scheduler();
 	}
 
 }
+
+

@@ -2,36 +2,39 @@ package mainPackage;
 
 public class Task
 {
-	private String name = "task";
+	private static final String DEFAULTNAME = "task";
+	private static final int DEFAULTWCET = 100, DEFAULTPERIOD = 100, DEFAULTDEADLINE = 100;
+	
+	private String name = DEFAULTNAME;
 	private int execTime, period, deadline;
 	
 	public Task()
 	{
-		this.setName("default");
-		this.setExecTime(10);
-		this.setPeriod(50);
-		this.setDeadline(20);
+		this.setName(DEFAULTNAME);
+		this.setExecTime(DEFAULTWCET);
+		this.setPeriod(DEFAULTPERIOD);
+		this.setDeadline(DEFAULTDEADLINE);
 	}
 	public Task(String name)
 	{
 		this.setName(name);
-		this.setExecTime(10);
-		this.setPeriod(50);
-		this.setDeadline(20);
+		this.setExecTime(DEFAULTWCET);
+		this.setPeriod(DEFAULTPERIOD);
+		this.setDeadline(DEFAULTDEADLINE);
 	}
 	public Task(String name, int execTime)
 	{
 		this.setName(name);
 		this.setExecTime(execTime);
-		this.setPeriod(50);
-		this.setDeadline(20);
+		this.setPeriod(DEFAULTPERIOD);
+		this.setDeadline(DEFAULTDEADLINE);
 	}
 	public Task(String name, int execTime, int period)
 	{
 		this.setName(name);
 		this.setExecTime(execTime);
 		this.setPeriod(period);
-		this.setDeadline(20);
+		this.setDeadline(DEFAULTDEADLINE);
 	}
 	public Task(String name, int execTime, int period, int deadline)
 	{
