@@ -26,7 +26,6 @@ import javax.swing.JTextArea;
 import javax.swing.MutableComboBoxModel;
 
 import objectPackage.Task;
-import mainPackage.CBMutableModel;
 import mainPackage.Main;
 
 /*
