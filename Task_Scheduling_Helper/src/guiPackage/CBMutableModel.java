@@ -5,79 +5,74 @@ import java.util.Vector;
 import javax.swing.MutableComboBoxModel;
 import javax.swing.event.ListDataListener;
 
-public class CBMutableModel implements MutableComboBoxModel<Object>
+import objectPackage.Task;
+
+public class CBMutableModel implements MutableComboBoxModel<Task>
 {
-	Vector<Object> objects = new Vector<Object>();
+	Vector<Task> tasks = new Vector<Task>();
 	Object item;
 
 	@Override
 	public Object getSelectedItem()
 	{
-		// TODO Auto-generated method stub
 		return item;
 	}
 
 	@Override
 	public void setSelectedItem(Object anItem)
 	{
-		// TODO Auto-generated method stub
 		item = anItem;
 	}
 
 	@Override
 	public void addListDataListener(ListDataListener l)
 	{
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public int getSize()
 	{
-		// TODO Auto-generated method stub
-		return objects.size();
+		return tasks.size();
 	}
 
-	@Override
-	public void removeListDataListener(ListDataListener l)
+	public void removeElement(Task obj)
 	{
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void removeElement(Object obj)
-	{
-		// TODO Auto-generated method stub
-		objects.removeElement(obj);
+		tasks.removeElement(obj);
 	}
 
 	@Override
 	public void removeElementAt(int index)
 	{
-		// TODO Auto-generated method stub
-		objects.removeElementAt(index);
+		tasks.removeElementAt(index);
 	}
 
 	@Override
-	public void addElement(Object item)
+	public void addElement(Task task)
 	{
-		// TODO Auto-generated method stub
-		objects.addElement(item);
+		tasks.add(task);
 	}
 
 	@Override
-	public void insertElementAt(Object item, int index)
+	public void insertElementAt(Task obj, int index)
 	{
-		// TODO Auto-generated method stub
-		objects.insertElementAt(item, index);
+		tasks.insertElementAt(obj, index);
 	}
 
 	@Override
-	public Object getElementAt(int index)
+	public Task getElementAt(int index)
 	{
-		// TODO Auto-generated method stub
-		return objects.get(index);
+		return tasks.get(index);
+	}
+
+	@Override
+	public void removeListDataListener(ListDataListener l)
+	{
+	}
+
+	@Override
+	public void removeElement(Object obj)
+	{
+		tasks.remove(obj);
 	}
 
 }
