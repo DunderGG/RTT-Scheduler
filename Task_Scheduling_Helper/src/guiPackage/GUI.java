@@ -23,6 +23,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.KeyStroke;
 import javax.swing.MutableComboBoxModel;
 
 import objectPackage.Task;
@@ -73,6 +74,14 @@ public class GUI extends JFrame
 		subMenu = new JMenu("New");
 		menu.add(subMenu);
 		menuItem = new JMenuItem("Task");
+		menuItem.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent arg0)
+			{
+				new newTaskGUI();
+			}
+		});
+		menuItem.setAccelerator(KeyStroke.getKeyStroke('N', Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 		subMenu.add(menuItem);
 		
 		menu = new JMenu("Edit");

@@ -42,6 +42,7 @@ public class Task
 		this.setExecTime(execTime);
 		this.setPeriod(period);
 		this.setDeadline(deadline);
+		System.out.println("Created: " + name + ", with properties:\n\tC = " + execTime + " T = " + period + " D = " + deadline);
 	}
 	
 	public String getName()

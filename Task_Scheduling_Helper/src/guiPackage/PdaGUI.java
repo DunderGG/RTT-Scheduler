@@ -64,32 +64,30 @@ public class PdaGUI extends JFrame
 		Object[][] data = new Object[controlPoints.size()][];
 		
 		int rowIndex = 0;
+		
+		//Create a row of data for each control point
 		for(int cp : controlPoints)
 		{
 			Object[] row = new Object[nrOfCols];
+			
+			//The first column will contain the control point
 			row[0] = cp;
 			
-			
+			//The next, arbitrary, number of columns will contain the results from PDA calculations
 			int j = 1;
-			for(double[] result : pdaResults)
+			for(Task task : taskList)
 			{
-				row[j] = result[rowIndex];
+				row[j] = Main.getScheduler().calcPDA(task, cp);
 				j++;
 			}
 	
+			//The last column contains the sum of all calculations, and the color indicates if it failed (red) or not (green)
 			double sum = 0;
 			for(int x = 1; x < nrOfCols-1; x++)
 			{
 				sum += (double)row[x];
 			}
 			row[nrOfCols-1] = sum;
-			
-			System.out.println("row[" + 0 + "] = " + row[0]);
-			for(int x = 1; x < nrOfCols-1; x++)
-			{
-				System.out.println("row[" + x + "] = " + row[x]);
-			}
-			System.out.println("row[" + (nrOfCols-1) + "] = " + row[nrOfCols-1]);
 			
 			data[rowIndex++] = row;
 		}

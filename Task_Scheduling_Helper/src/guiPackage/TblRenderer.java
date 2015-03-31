@@ -23,8 +23,13 @@ public class TblRenderer extends DefaultTableCellRenderer
 	      
 	     if(!table.isRowSelected(row))
 	     {
-		     if(column == table.getColumnCount()-1 && sum > ctrlPt)
-		         c.setBackground(Color.RED); 
+		     if(column == table.getColumnCount() - 1)
+		     {
+		    	 if(sum > ctrlPt)
+		    		 c.setBackground(Color.RED);
+		    	 else
+		    		 c.setBackground(Color.GREEN);
+		     }
 		     else
 		    	 c.setBackground(table.getBackground());
 	     }

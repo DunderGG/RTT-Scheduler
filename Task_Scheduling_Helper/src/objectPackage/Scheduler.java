@@ -83,31 +83,37 @@ public class Scheduler
 		{
 			calc = new double[controlPoints.size()];
 			int i = 0;
+			int temp = 0;
 			for(int cp : controlPoints)
 			{
-				calc[i] = ((Math.floor((cp - task.getDeadline()) / task.getPeriod()) + 1) * task.getExecTime());
-				//System.out.println(task.toString() + " calc["+i+"] = " + calc[i]);
+				temp = cp - task.getDeadline();
+				if(temp < 0)
+					calc[i] = 0;
+				else
+					calc[i] = ((Math.floor((cp - task.getDeadline()) / task.getPeriod()) + 1) * task.getExecTime());
+				
 				i++;
 			}
 			result.add(calc);
 		}
-		
-		int i = 0, j = 0;
-		
-		for(double[] res : result)
-		{
-			for(double d : res)
-			{
-				System.out.println("Array " + i + " index " + j + " = " + d);
-				j++;
-			}
-			j = 0;
-			i++;
-		}
-		System.out.println("size of result = " + result.size());
+
 		return result;
 	}
 	
+	public double calcPDA(Task task, int cp)
+	{
+		//Calculated iteratively with (floor{(L - D)/T} + 1) * C for each control point.
+		double result = 0;
+		
+		int temp = cp - task.getDeadline();
+		
+		if(temp < 0)
+			result = 0;
+		else
+			result = ((Math.floor((cp - task.getDeadline()) / task.getPeriod()) + 1) * task.getExecTime());
+		
+		return result;
+	}
 	
 	/**
 	 * Function used for calculating all the checkpoints L, for a given task set,
@@ -124,17 +130,17 @@ public class Scheduler
 		ArrayList<Integer> result = new ArrayList<Integer>();
 		
 		int L = 0;
-		
 		for(Task task : taskList)
 		{
-			for(int i = 0; L+task.getPeriod() <= tasksetLCM; i++)
+			for(int k = 0; L+task.getPeriod() <= tasksetLCM; k++)
 			{
-				L = (i*task.getPeriod()) + task.getDeadline();
+				L = (k*task.getPeriod()) + task.getDeadline();
 				
 				//We don't want any duplicates.
 				if(!result.contains(L))
 					result.add(L);
 			}
+			L = 0;
 		}
 		
 		//Make sure the control points are ordered before returning it.

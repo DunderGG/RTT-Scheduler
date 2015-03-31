@@ -44,16 +44,16 @@ public class Main
 
 		
 		
-		taskList.add(new Task("Task 1",100, 400));
-		taskList.add(new Task("Task 2", 200, 500));
-		taskList.add(new Task("Task 3", 300, 300));
-		taskList.add(new Task("Task 4", 300, 200));
+		taskList.add(new Task("Task 1",100, 400, 400));
+		//taskList.add(new Task("Task 2", 200, 500, 500));
+		taskList.add(new Task("Task 3", 150, 300, 300));
+		taskList.add(new Task("Task 4", 200, 600, 600));
 		
 		scheduler = new Scheduler(taskList);
 
 		for(Task task : taskList)
 		{
-			gui.addTaskToCB(task);
+			gui.addTaskToCB(task);			
 		}
 	}
 	
