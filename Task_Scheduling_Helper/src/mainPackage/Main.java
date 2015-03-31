@@ -40,21 +40,20 @@ public class Main
 		{
 			e1.printStackTrace();
 		}
-	
 
-		
-		
-		taskList.add(new Task("Task 1",100, 400, 400));
+		//taskList.add(new Task("Task 1",100, 400, 400));
 		//taskList.add(new Task("Task 2", 200, 500, 500));
-		taskList.add(new Task("Task 3", 150, 300, 300));
-		taskList.add(new Task("Task 4", 200, 600, 600));
+		//taskList.add(new Task("Task 3", 150, 300, 300));
+		//taskList.add(new Task("Task 4", 200, 600, 600));
 		
-		scheduler = new Scheduler(taskList);
-
+		scheduler = new Scheduler();
+		
+		/*
 		for(Task task : taskList)
 		{
 			gui.addTaskToCB(task);			
 		}
+		*/
 	}
 	
 	public static ArrayList<Task> getTaskList()

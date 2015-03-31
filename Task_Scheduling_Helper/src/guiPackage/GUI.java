@@ -48,7 +48,7 @@ public class GUI extends JFrame
 	final Container contentPane = getContentPane();
 	
 	private JTextArea txtExecTime = new JTextArea(), txtPeriod = new JTextArea(), txtDeadline = new JTextArea(), txtLCM = new JTextArea(), txtCtrlPts = new JTextArea();
-	private JComboBox<Object> CBTasks;
+	private JComboBox<Task> CBTasks;
 	//private ComboBoxRenderer CBRenderer;
 	
 	private JButton btnPDA, btnTextResults, btnDiagResults;
@@ -147,7 +147,7 @@ public class GUI extends JFrame
 		GBC.anchor = GridBagConstraints.SOUTH;
 		taskPropertiesPanel.add(lblTask, GBC);
 		
-		CBTasks = new JComboBox<Object>(new CBMutableModel());
+		CBTasks = new JComboBox<Task>();
 		CBTasks.setPreferredSize(new Dimension(100,20));
 		CBTasks.addActionListener(new ActionListener()
 		{

@@ -27,6 +27,7 @@ public class Scheduler
 	private policies policy;
 	private long tasksetLCM;
 	private ArrayList<Integer> controlPoints = new ArrayList<Integer>();
+	private ArrayList<Task> taskList = new ArrayList<Task>();
 	
 	public long getTasksetLCM()
 	{
@@ -37,11 +38,18 @@ public class Scheduler
 		return controlPoints;
 	}
 	
+	
+	public Scheduler()
+	{	
+		GUI gui = Main.getGui();
+		
+	}
 	/**
 	 * @param taskList
 	 */
 	public Scheduler(ArrayList<Task> taskList)
 	{
+		this.taskList = taskList;
 		
 		GUI gui = Main.getGui();
 		
@@ -58,6 +66,9 @@ public class Scheduler
 	 */
 	public Scheduler(ArrayList<Task> taskList, policies policy)
 	{
+		this.taskList = taskList;
+		this.policy = policy;
+		
 		GUI gui = Main.getGui();
 		
 		tasksetLCM = calcLCM(taskList);
@@ -66,38 +77,7 @@ public class Scheduler
 		
 		controlPoints = calcContPoints(taskList);
 		gui.updateCtrlPts(controlPoints);
-		
-		this.policy = policy;
-		
-	}
 
-	/**
-	 * @param taskList
-	 */
-	public ArrayList<double[]> calcPDA(ArrayList<Task> taskList)
-	{
-		//Calculated iteratively with (floor{(L - D)/T} + 1) * C for each control point.
-		ArrayList<double[]> result = new ArrayList<double[]>();
-		double[] calc = null;
-		for(Task task : taskList)
-		{
-			calc = new double[controlPoints.size()];
-			int i = 0;
-			int temp = 0;
-			for(int cp : controlPoints)
-			{
-				temp = cp - task.getDeadline();
-				if(temp < 0)
-					calc[i] = 0;
-				else
-					calc[i] = ((Math.floor((cp - task.getDeadline()) / task.getPeriod()) + 1) * task.getExecTime());
-				
-				i++;
-			}
-			result.add(calc);
-		}
-
-		return result;
 	}
 	
 	public double calcPDA(Task task, int cp)
@@ -221,5 +201,11 @@ public class Scheduler
 	private static long calcLCM(long a, long b)
 	{
 		return a * (b / calcGCD(a, b));
+	}
+	
+	public void addNewTask(Task task)
+	{
+		taskList.add(task);
+		Main.getGui().addTaskToCB(task);
 	}
 }

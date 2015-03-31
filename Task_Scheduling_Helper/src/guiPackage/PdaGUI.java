@@ -49,8 +49,6 @@ public class PdaGUI extends JFrame
 		
 		controlPoints = Main.getScheduler().getControlPoints();
 		
-		pdaResults = Main.getScheduler().calcPDA(taskList);
-		
 		
 		//Each task needs a column, the control points need one and the result needs one
 		int nrOfCols = taskList.size() + 2;

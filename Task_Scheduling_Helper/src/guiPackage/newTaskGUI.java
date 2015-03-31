@@ -6,12 +6,17 @@ import java.awt.Container;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+
+import objectPackage.Task;
+import mainPackage.Main;
 
 public class newTaskGUI extends JFrame
 {
@@ -21,6 +26,9 @@ public class newTaskGUI extends JFrame
 	public newTaskGUI()
 	{
 		super("Add a new task");
+		//Set the position of the window to be of the same Y-position as, and just right of, the main window
+		this.setLocation(Main.getGui().getX()+Main.getGui().getWidth(), Main.getGui().getY());
+		
 		contentPane.setBackground(Color.BLACK);	
 		
 		/*
@@ -32,11 +40,12 @@ public class newTaskGUI extends JFrame
 		GridBagConstraints GBC;
 		
 		JLabel lblName = new JLabel("Name");
+
 		GBC = new GridBagConstraints();
+		GBC.fill = GridBagConstraints.BOTH;
 		GBC.gridx = 0;
 		GBC.gridy = 0;
 		GBC.weighty = 1;
-		GBC.anchor = GridBagConstraints.SOUTH;
 		taskPropertiesPanel.add(lblName, GBC);
 		
 		JLabel lblWCET = new JLabel("WCET");
@@ -44,7 +53,6 @@ public class newTaskGUI extends JFrame
 		GBC.gridx = 0;
 		GBC.gridy = 1;
 		GBC.weighty = 1;
-		GBC.anchor = GridBagConstraints.SOUTH;
 		taskPropertiesPanel.add(lblWCET, GBC);
 		
 		JLabel lblPeriod = new JLabel("Period");
@@ -52,7 +60,6 @@ public class newTaskGUI extends JFrame
 		GBC.gridx = 0;
 		GBC.gridy = 2;
 		GBC.weighty = 1;
-		GBC.anchor = GridBagConstraints.SOUTH;
 		taskPropertiesPanel.add(lblPeriod, GBC);
 		
 		JLabel lblDeadline = new JLabel("Deadline");
@@ -60,56 +67,58 @@ public class newTaskGUI extends JFrame
 		GBC.gridx = 0;
 		GBC.gridy = 3;
 		GBC.weighty = 1;
-		GBC.anchor = GridBagConstraints.SOUTH;
 		taskPropertiesPanel.add(lblDeadline, GBC);
 		
 		
 		
 		
-		JTextArea txtName = new JTextArea();
+		final JTextArea txtName = new JTextArea(1,10);
 		TransferFocus.patch(txtName);
 		GBC = new GridBagConstraints();
 		GBC.gridx = 1;
 		GBC.gridy = 0;
 		GBC.weighty = 1;
-		GBC.anchor = GridBagConstraints.SOUTH;
 		taskPropertiesPanel.add(txtName, GBC);
 		
-		JTextArea txtWCET = new JTextArea();
+		final JTextArea txtWCET = new JTextArea(1,5);
 		TransferFocus.patch(txtWCET);
 		GBC = new GridBagConstraints();
 		GBC.gridx = 1;
 		GBC.gridy = 1;
 		GBC.weighty = 1;
-		GBC.anchor = GridBagConstraints.SOUTH;
 		taskPropertiesPanel.add(txtWCET, GBC);
 		
-		JTextArea txtPeriod = new JTextArea();
+		final JTextArea txtPeriod = new JTextArea(1,5);
 		TransferFocus.patch(txtPeriod);
 		GBC = new GridBagConstraints();
 		GBC.gridx = 1;
 		GBC.gridy = 2;
 		GBC.weighty = 1;
-		GBC.anchor = GridBagConstraints.SOUTH;
 		taskPropertiesPanel.add(txtPeriod, GBC);
 		
-		JTextArea txtDeadline = new JTextArea();
+		final JTextArea txtDeadline = new JTextArea(1,5);
 		TransferFocus.patch(txtDeadline);
 		txtDeadline.setRows(1);
 		GBC = new GridBagConstraints();
 		GBC.gridx = 1;
 		GBC.gridy = 3;
 		GBC.weighty = 1;
-		GBC.anchor = GridBagConstraints.SOUTH;
 		taskPropertiesPanel.add(txtDeadline,GBC);
 		
 		JButton btnAdd = new JButton("Add task");
+		btnAdd.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				Main.getScheduler().addNewTask(new Task(txtName.getText(), Integer.parseInt(txtWCET.getText()), Integer.parseInt(txtPeriod.getText()), Integer.parseInt(txtDeadline.getText())));
+			}
+		});
 		GBC = new GridBagConstraints();
 		GBC.gridx = 0;
 		GBC.gridy = 4;
 		GBC.weighty = 1;
-
-		GBC.anchor = GridBagConstraints.SOUTH;
+		GBC.gridwidth = 2;
+		GBC.fill = GridBagConstraints.HORIZONTAL;
 		taskPropertiesPanel.add(btnAdd, GBC);
 		
 		
@@ -123,7 +132,7 @@ public class newTaskGUI extends JFrame
 		Toolkit tk = Toolkit.getDefaultToolkit();
 		setResizable(false);
 		setVisible(true);
-		setSize((int)(tk.getScreenSize().getWidth()*0.25), (int)(tk.getScreenSize().getHeight()*0.30));	
+		setSize((int)(tk.getScreenSize().getWidth()*0.20), (int)(tk.getScreenSize().getHeight()*0.20));	
 	}
 	
 	
