@@ -1,4 +1,4 @@
-package mainPackage;
+package objectPackage;
 
 public class Task
 {
