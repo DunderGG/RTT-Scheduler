@@ -4,6 +4,7 @@ import guiPackage.GUI;
 
 import java.util.ArrayList;
 
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import objectPackage.Scheduler;
@@ -24,10 +25,7 @@ import objectPackage.Task;
 
 public class Main
 {	
-	private static ArrayList<Task> taskList = new ArrayList<Task>();
-	
-	static GUI gui = new GUI();
-
+	static GUI gui;
 	static Scheduler scheduler;
 	public static void main(String[] args)
 	{
@@ -41,24 +39,23 @@ public class Main
 			e1.printStackTrace();
 		}
 
-		//taskList.add(new Task("Task 1",100, 400, 400));
-		//taskList.add(new Task("Task 2", 200, 500, 500));
-		//taskList.add(new Task("Task 3", 150, 300, 300));
-		//taskList.add(new Task("Task 4", 200, 600, 600));
 		
-		scheduler = new Scheduler();
+		SwingUtilities.invokeLater(new Runnable(){
+			@Override
+			public void run()
+			{
+				gui = new GUI();	
+			}
+		});
 		
-		/*
-		for(Task task : taskList)
-		{
-			gui.addTaskToCB(task);			
-		}
-		*/
-	}
-	
-	public static ArrayList<Task> getTaskList()
-	{
-		return taskList;
+		SwingUtilities.invokeLater(new Runnable(){
+			@Override
+			public void run()
+			{
+				scheduler = new Scheduler();
+			}
+		});
+
 	}
 	
 	public static GUI getGui()

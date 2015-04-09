@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.TreeSet;
 
 import javax.swing.ComboBoxModel;
 import javax.swing.JButton;
@@ -112,7 +113,7 @@ public class GUI extends JFrame
 			@Override
 			public void actionPerformed(ActionEvent arg0)
 			{
-				new PdaGUI(Main.getTaskList());
+				new PdaGUI(Main.getScheduler().getTaskList());
 			}
 		});
 		GBC = new GridBagConstraints();
@@ -151,9 +152,11 @@ public class GUI extends JFrame
 		CBTasks.setPreferredSize(new Dimension(100,20));
 		CBTasks.addActionListener(new ActionListener()
 		{
+			@SuppressWarnings("unchecked")
 			public void actionPerformed(ActionEvent e)
 			{
 				JComboBox<Object> cb = (JComboBox<Object>)e.getSource();
+
 				Task task = (Task) cb.getSelectedItem();
 				
 				txtExecTime.setText(Integer.toString(task.getExecTime()));
@@ -247,10 +250,12 @@ public class GUI extends JFrame
 		txtCtrlPts.setLineWrap(true);
 		txtCtrlPts.setWrapStyleWord(true);
 		txtCtrlPts.setRows(5);
+		txtCtrlPts.setColumns(10);
 		GBC = new GridBagConstraints();
 		GBC.gridx = 1;
 		GBC.gridy = 1;
 		GBC.weightx = 1;
+		GBC.gridheight = 2;
 		resultPanel.add(scroll, GBC);
 		
 		contentPane.add(resultPanel, BorderLayout.CENTER);
@@ -272,11 +277,12 @@ public class GUI extends JFrame
 		/*
 		 * HANDLING THE WINDOW
 		 */
-		Toolkit tk = Toolkit.getDefaultToolkit();
+		//Toolkit tk = Toolkit.getDefaultToolkit();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(false);
 		setVisible(true);
-		setSize((int)(tk.getScreenSize().getWidth()*0.25), (int)(tk.getScreenSize().getHeight()*0.65));
+		//setSize((int)(tk.getScreenSize().getWidth()*0.25), (int)(tk.getScreenSize().getHeight()*0.65));
+		setSize(new Dimension(500,300));
 		
 		/*
 		 * Debugging information
@@ -292,21 +298,14 @@ public class GUI extends JFrame
 		txtLCM.setText(Long.toString(LCM));
 	}
 	
-	public void updateCtrlPts(ArrayList<Integer> CtrlPts)
+	public void updateCtrlPts(TreeSet<Integer> CtrlPts)
 	{
 		String text = "";
-		
-		int i = 0;
+		System.out.println("Size of CtrlPts: " + CtrlPts.size());
 		for(int pt : CtrlPts)
 		{
-			text = text + pt;
-			
-			if(i+++1 < CtrlPts.size())
-			{
-				text = text + ", ";
-			}
+			text = text + " " + pt;
 		}
-		
 		txtCtrlPts.setText(text);
 	}
 

@@ -17,6 +17,7 @@ import java.awt.Color;
 import java.awt.Container;
 import java.awt.Toolkit;
 import java.util.ArrayList;
+import java.util.TreeSet;
 
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
@@ -35,7 +36,7 @@ public class PdaGUI extends JFrame
 	
 	final Container contentPane = getContentPane();
 	
-	private ArrayList<Integer> controlPoints;
+	private TreeSet<Integer> controlPoints;
 	private ArrayList<double[]> pdaResults;
 	
 	public PdaGUI(ArrayList<Task> taskList)

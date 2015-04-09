@@ -38,7 +38,11 @@ public class Task
 	}
 	public Task(String name, int execTime, int period, int deadline)
 	{
-		this.setName(name);
+		if(name.equals(""))
+			this.setName("Default");
+		else
+			this.setName(name);
+		
 		this.setExecTime(execTime);
 		this.setPeriod(period);
 		this.setDeadline(deadline);

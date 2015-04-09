@@ -8,10 +8,13 @@ import java.awt.GridBagLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
@@ -39,8 +42,11 @@ public class newTaskGUI extends JFrame
 		JPanel taskPropertiesPanel = new JPanel(new GridBagLayout());
 		GridBagConstraints GBC;
 		
+		
+		/*
+		 * LABELS
+		 */
 		JLabel lblName = new JLabel("Name");
-
 		GBC = new GridBagConstraints();
 		GBC.fill = GridBagConstraints.BOTH;
 		GBC.gridx = 0;
@@ -70,9 +76,12 @@ public class newTaskGUI extends JFrame
 		taskPropertiesPanel.add(lblDeadline, GBC);
 		
 		
-		
+		/*
+		 * TEXTAREAS
+		 */
 		
 		final JTextArea txtName = new JTextArea(1,10);
+		txtName.addFocusListener(new selectAllFocusAdapter());
 		TransferFocus.patch(txtName);
 		GBC = new GridBagConstraints();
 		GBC.gridx = 1;
@@ -81,6 +90,7 @@ public class newTaskGUI extends JFrame
 		taskPropertiesPanel.add(txtName, GBC);
 		
 		final JTextArea txtWCET = new JTextArea(1,5);
+		txtWCET.addFocusListener(new selectAllFocusAdapter());
 		TransferFocus.patch(txtWCET);
 		GBC = new GridBagConstraints();
 		GBC.gridx = 1;
@@ -89,6 +99,7 @@ public class newTaskGUI extends JFrame
 		taskPropertiesPanel.add(txtWCET, GBC);
 		
 		final JTextArea txtPeriod = new JTextArea(1,5);
+		txtPeriod.addFocusListener(new selectAllFocusAdapter());
 		TransferFocus.patch(txtPeriod);
 		GBC = new GridBagConstraints();
 		GBC.gridx = 1;
@@ -97,6 +108,7 @@ public class newTaskGUI extends JFrame
 		taskPropertiesPanel.add(txtPeriod, GBC);
 		
 		final JTextArea txtDeadline = new JTextArea(1,5);
+		txtDeadline.addFocusListener(new selectAllFocusAdapter());
 		TransferFocus.patch(txtDeadline);
 		txtDeadline.setRows(1);
 		GBC = new GridBagConstraints();
@@ -110,7 +122,47 @@ public class newTaskGUI extends JFrame
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				Main.getScheduler().addNewTask(new Task(txtName.getText(), Integer.parseInt(txtWCET.getText()), Integer.parseInt(txtPeriod.getText()), Integer.parseInt(txtDeadline.getText())));
+				if(txtName.getText().equals(""))
+					JOptionPane.showMessageDialog(contentPane, "The task needs a name!");
+				else if(txtWCET.getText().equals(""))
+					JOptionPane.showMessageDialog(contentPane, "The task needs a WCET!");
+				else if(txtPeriod.getText().equals(""))
+					JOptionPane.showMessageDialog(contentPane, "The task needs a period!");
+				else
+				{
+					if(txtDeadline.getText().equals(""))
+					{
+						Object[] options = {"YES", "NO"}; 
+						int ans = JOptionPane.showOptionDialog(
+							contentPane, 
+							"If you don't specify a deadline, it is automatically set to be equal to its period\n",
+							"Use default deadline?",
+							JOptionPane.YES_NO_OPTION,
+							JOptionPane.QUESTION_MESSAGE,
+							null,
+							options,
+							options[0]);
+					
+						if(ans == JOptionPane.YES_OPTION)
+						{
+							Main.getScheduler().addNewTask(new Task(txtName.getText(), Integer.parseInt(txtWCET.getText()), Integer.parseInt(txtPeriod.getText()), Integer.parseInt(txtPeriod.getText())));
+					
+							Main.getScheduler().updateContPoints();
+							Main.getScheduler().updateLCM();
+							txtName.setText("");
+						}
+					}
+					else
+					{
+						Main.getScheduler().addNewTask(new Task(txtName.getText(), Integer.parseInt(txtWCET.getText()), Integer.parseInt(txtPeriod.getText()), Integer.parseInt(txtDeadline.getText())));
+						
+						Main.getScheduler().updateContPoints();
+						Main.getScheduler().updateLCM();
+						txtName.setText("");
+					}
+					
+					
+				}
 			}
 		});
 		GBC = new GridBagConstraints();

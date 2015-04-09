@@ -4,6 +4,7 @@ import guiPackage.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.TreeSet;
 
 import mainPackage.*;
 
@@ -26,31 +27,16 @@ public class Scheduler
 	
 	private policies policy;
 	private long tasksetLCM;
-	private ArrayList<Integer> controlPoints = new ArrayList<Integer>();
+	private TreeSet<Integer> controlPoints = new TreeSet<Integer>();
 	private ArrayList<Task> taskList = new ArrayList<Task>();
-	
-	public long getTasksetLCM()
-	{
-		return tasksetLCM;
-	}
-	public ArrayList<Integer> getControlPoints()
-	{
-		return controlPoints;
-	}
-	
-	
+
 	public Scheduler()
 	{	
 		GUI gui = Main.getGui();
-		
 	}
-	/**
-	 * @param taskList
-	 */
 	public Scheduler(ArrayList<Task> taskList)
 	{
 		this.taskList = taskList;
-		
 		GUI gui = Main.getGui();
 		
 		tasksetLCM = calcLCM(taskList);
@@ -60,10 +46,6 @@ public class Scheduler
 		controlPoints = calcContPoints(taskList);
 		gui.updateCtrlPts(controlPoints);
 	}
-	/**
-	 * @param taskList
-	 * @param string
-	 */
 	public Scheduler(ArrayList<Task> taskList, policies policy)
 	{
 		this.taskList = taskList;
@@ -84,14 +66,11 @@ public class Scheduler
 	{
 		//Calculated iteratively with (floor{(L - D)/T} + 1) * C for each control point.
 		double result = 0;
-		
 		int temp = cp - task.getDeadline();
-		
 		if(temp < 0)
 			result = 0;
 		else
 			result = ((Math.floor((cp - task.getDeadline()) / task.getPeriod()) + 1) * task.getExecTime());
-		
 		return result;
 	}
 	
@@ -100,14 +79,11 @@ public class Scheduler
 	 * needed for a Processor Demand Analysis.
 	 * 
 	 * L = kT + D, where k = 0,1,2,3....
-	 * 
-	 * @param taskList
-	 * @return
 	 */
-	private ArrayList<Integer> calcContPoints(ArrayList<Task> taskList)
+	private TreeSet<Integer> calcContPoints(ArrayList<Task> taskList)
 	{
-		//The resulting list of control points, L.
-		ArrayList<Integer> result = new ArrayList<Integer>();
+		//Use TreeSet instead of ArrayList when we don't allow duplicates, and want ordering guaranteed
+		TreeSet<Integer> resultTree = new TreeSet<Integer>();
 		
 		int L = 0;
 		for(Task task : taskList)
@@ -116,20 +92,28 @@ public class Scheduler
 			{
 				L = (k*task.getPeriod()) + task.getDeadline();
 				
-				//We don't want any duplicates.
-				if(!result.contains(L))
-					result.add(L);
+				resultTree.add(L);
 			}
 			L = 0;
 		}
-		
-		//Make sure the control points are ordered before returning it.
-		Collections.sort(result);
-
-		return result;
+		return resultTree;
 	}
-	public policies getPolicy() {return policy;}
-	public void setPolicy(policies policy) {this.policy = policy;}
+	/*
+	 * Safe to call from public
+	 */
+	public void updateContPoints()
+	{
+		controlPoints = calcContPoints(taskList);
+		Main.getGui().updateCtrlPts(controlPoints);
+	}
+	/*
+	 * Safe to call from public
+	 */
+	public void updateLCM()
+	{
+		tasksetLCM = calcLCM(taskList);
+		Main.getGui().updateLCM(tasksetLCM);
+	}
 
 	public long calcLCM(ArrayList<Task> tasks)
 	{
@@ -138,74 +122,44 @@ public class Scheduler
 		{
 			periods[i] = tasks.get(i).getPeriod();
 		}
-		
 		return calcLCM(periods);
 	}
 	
-	/**
-	 * @param a
-	 * @param b
-	 * @return
-	 */
 	private static long calcGCD(long a, long b)
 	{
 		while(b > 0)
 		{
 			long temp = b;
-			
 			b = a % b;
-			
 			a = temp;
 		}
-		
 		return a;
 	}
-	
-	/**
-	 * @param input
-	 * @return
-	 */
-	private static long calcGCD(long[] input)
-	{
-		long result = input[0];
-		
-		for(int i = 1; i<input.length; i++)
-		{
-			result = calcGCD(result, input[i]);
-		}
-		
-		return result;
-	}
-	
-	/**
-	 * @param input
-	 * @return
-	 */
+
 	private static long calcLCM(long[] input)
 	{
 		long result = input[0];
-		
 		for(int i = 1; i<input.length; i++)
 		{
 			result = calcLCM(result, input[i]);
 		}
-		
 		return result;
-	}
-
-	/**
-	 * @param a
-	 * @param b
-	 * @return
-	 */
-	private static long calcLCM(long a, long b)
-	{
-		return a * (b / calcGCD(a, b));
 	}
 	
 	public void addNewTask(Task task)
 	{
 		taskList.add(task);
+		
+		tasksetLCM = calcLCM(taskList);
+		controlPoints = calcContPoints(taskList);
+		
 		Main.getGui().addTaskToCB(task);
 	}
+	
+	public policies getPolicy() {return policy;}
+	public void setPolicy(policies policy) {this.policy = policy;}
+	public ArrayList<Task> getTaskList() { return taskList; }
+	public long getTasksetLCM()	{ return tasksetLCM; }
+	public TreeSet<Integer> getControlPoints() { return controlPoints;	}
+	private static long calcLCM(long a, long b)	{ return a * (b / calcGCD(a, b)); }
 }
