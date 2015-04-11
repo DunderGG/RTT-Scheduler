@@ -61,7 +61,7 @@ public class GUI extends JFrame
 	public GUI()
 	{
 		super("RTT Scheduler");
-		contentPane.setBackground(Color.BLACK);	
+		contentPane.setBackground(Color.LIGHT_GRAY);	
 		
 		/*
 		 * A menu for options and stuff
@@ -105,10 +105,12 @@ public class GUI extends JFrame
 		 * A panel for the desired task properties: execution times, periods and (optionally) deadlines.
 		 */
 		JPanel taskPropertiesPanel = new JPanel(new GridBagLayout());
+		taskPropertiesPanel.setBackground(contentPane.getBackground());
 		
 		GridBagConstraints GBC;
 
 		btnPDA = new JButton("PDA");
+		btnPDA.setBackground(contentPane.getBackground());
 		btnPDA.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0)
@@ -124,6 +126,7 @@ public class GUI extends JFrame
 		taskPropertiesPanel.add(btnPDA, GBC);
 		
 		btnTextResults = new JButton("Tex");
+		btnTextResults.setBackground(contentPane.getBackground());
 		GBC = new GridBagConstraints();
 		GBC.gridx = 1;
 		GBC.gridy = 0;
@@ -133,6 +136,7 @@ public class GUI extends JFrame
 		taskPropertiesPanel.add(btnTextResults, GBC);
 		
 		btnDiagResults = new JButton("Dia");
+		btnDiagResults.setBackground(contentPane.getBackground());
 		GBC = new GridBagConstraints();
 		GBC.gridx = 2;
 		GBC.gridy = 0;
@@ -225,6 +229,7 @@ public class GUI extends JFrame
 		 * A panel for displaying the results in text.
 		 */
 		JPanel resultPanel = new JPanel(new GridBagLayout());
+		resultPanel.setBackground(contentPane.getBackground());
 		
 		JLabel lblLCM = new JLabel("LCM");
 		GBC = new GridBagConstraints();

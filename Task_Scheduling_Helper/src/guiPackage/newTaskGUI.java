@@ -10,8 +10,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.text.NumberFormat;
 
 import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -32,7 +34,7 @@ public class newTaskGUI extends JFrame
 		//Set the position of the window to be of the same Y-position as, and just right of, the main window
 		this.setLocation(Main.getGui().getX()+Main.getGui().getWidth(), Main.getGui().getY());
 		
-		contentPane.setBackground(Color.BLACK);	
+		contentPane.setBackground(Color.LIGHT_GRAY);	
 		
 		/*
 		 * Everything related to the task information
@@ -40,6 +42,7 @@ public class newTaskGUI extends JFrame
 		 * A panel for the desired task properties: execution times, periods and (optionally) deadlines.
 		 */
 		JPanel taskPropertiesPanel = new JPanel(new GridBagLayout());
+		taskPropertiesPanel.setBackground(contentPane.getBackground());
 		GridBagConstraints GBC;
 		
 		
@@ -89,7 +92,14 @@ public class newTaskGUI extends JFrame
 		GBC.weighty = 1;
 		taskPropertiesPanel.add(txtName, GBC);
 		
-		final JTextArea txtWCET = new JTextArea(1,5);
+		
+		NumberFormat intFormat = NumberFormat.getIntegerInstance();
+		intFormat.setGroupingUsed(false);
+		intFormat.setParseIntegerOnly(true);
+		
+		//Use JFormattedTextFields with an Integer NumberFormat, so that we only accept Integers as input
+		final JFormattedTextField txtWCET = new JFormattedTextField(intFormat);
+		txtWCET.setColumns(5);
 		txtWCET.addFocusListener(new selectAllFocusAdapter());
 		TransferFocus.patch(txtWCET);
 		GBC = new GridBagConstraints();
@@ -98,7 +108,8 @@ public class newTaskGUI extends JFrame
 		GBC.weighty = 1;
 		taskPropertiesPanel.add(txtWCET, GBC);
 		
-		final JTextArea txtPeriod = new JTextArea(1,5);
+		final JFormattedTextField txtPeriod = new JFormattedTextField(intFormat);
+		txtPeriod.setColumns(5);
 		txtPeriod.addFocusListener(new selectAllFocusAdapter());
 		TransferFocus.patch(txtPeriod);
 		GBC = new GridBagConstraints();
@@ -107,10 +118,10 @@ public class newTaskGUI extends JFrame
 		GBC.weighty = 1;
 		taskPropertiesPanel.add(txtPeriod, GBC);
 		
-		final JTextArea txtDeadline = new JTextArea(1,5);
+		final JFormattedTextField txtDeadline = new JFormattedTextField(intFormat);
+		txtDeadline.setColumns(5);
 		txtDeadline.addFocusListener(new selectAllFocusAdapter());
 		TransferFocus.patch(txtDeadline);
-		txtDeadline.setRows(1);
 		GBC = new GridBagConstraints();
 		GBC.gridx = 1;
 		GBC.gridy = 3;
@@ -118,6 +129,7 @@ public class newTaskGUI extends JFrame
 		taskPropertiesPanel.add(txtDeadline,GBC);
 		
 		JButton btnAdd = new JButton("Add task");
+		btnAdd.setBackground(contentPane.getBackground());
 		btnAdd.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -145,7 +157,7 @@ public class newTaskGUI extends JFrame
 					
 						if(ans == JOptionPane.YES_OPTION)
 						{
-							Main.getScheduler().addNewTask(new Task(txtName.getText(), Integer.parseInt(txtWCET.getText()), Integer.parseInt(txtPeriod.getText()), Integer.parseInt(txtPeriod.getText())));
+							Main.getScheduler().addNewTask(new Task(txtName.getText(), (int)txtWCET.getValue(), (int)txtPeriod.getValue(), (int)txtPeriod.getValue()));
 					
 							Main.getScheduler().updateContPoints();
 							Main.getScheduler().updateLCM();
