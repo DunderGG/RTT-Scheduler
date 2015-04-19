@@ -21,6 +21,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -175,6 +176,33 @@ public class GUI extends JFrame
 		GBC.anchor = GridBagConstraints.NORTH;
 		taskPropertiesPanel.add(CBTasks, GBC);
 		
+		JButton btnDelTask = new JButton("Delete");
+		btnDelTask.setBackground(contentPane.getBackground());
+		btnDelTask.addActionListener(new ActionListener() 
+		{
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				Task task = (Task) CBTasks.getSelectedItem();
+				
+				if(task == null)
+				{
+					JOptionPane.showMessageDialog(contentPane, "No task selected");
+				}	
+				else
+				{
+					Main.getScheduler().removeTask(task);
+					removeTaskFromCB(task);
+				}
+			}
+		});
+		GBC = new GridBagConstraints();
+		GBC.gridx = 1;
+		GBC.gridy = 2;
+		GBC.weighty = 1;
+		GBC.anchor = GridBagConstraints.NORTH;
+		taskPropertiesPanel.add(btnDelTask, GBC);
+		
 		JLabel lblWcet = new JLabel("WCET");
 		GBC = new GridBagConstraints();
 		GBC.gridx = 0;
@@ -183,6 +211,7 @@ public class GUI extends JFrame
 		GBC.anchor = GridBagConstraints.SOUTH;
 		taskPropertiesPanel.add(lblWcet, GBC);
 		txtExecTime.setEditable(false);
+		txtExecTime.setBackground(contentPane.getBackground());
 		GBC = new GridBagConstraints();
 		GBC.gridx = 0;
 		GBC.gridy = 4;
@@ -198,6 +227,7 @@ public class GUI extends JFrame
 		GBC.anchor = GridBagConstraints.SOUTH;
 		taskPropertiesPanel.add(lblPeriod, GBC);
 		txtPeriod.setEditable(false);
+		txtPeriod.setBackground(contentPane.getBackground());
 		GBC = new GridBagConstraints();
 		GBC.gridx = 0;
 		GBC.gridy = 6;
@@ -213,6 +243,7 @@ public class GUI extends JFrame
 		GBC.anchor = GridBagConstraints.SOUTH;
 		taskPropertiesPanel.add(lblDeadline, GBC);
 		txtDeadline.setEditable(false);
+		txtDeadline.setBackground(contentPane.getBackground());
 		GBC = new GridBagConstraints();
 		GBC.gridx = 0;
 		GBC.gridy = 8;
@@ -238,6 +269,7 @@ public class GUI extends JFrame
 		GBC.weightx = 1;
 		resultPanel.add(lblLCM, GBC);
 		txtLCM.setEditable(false);
+		txtLCM.setBackground(contentPane.getBackground());
 		GBC = new GridBagConstraints();
 		GBC.gridx = 0;
 		GBC.gridy = 1;
@@ -318,5 +350,9 @@ public class GUI extends JFrame
 	{
 		CBTasks.addItem(newTask);
 	}	
+	public void removeTaskFromCB(Task task)
+	{
+		CBTasks.removeItem(task);
+	}
 
 }

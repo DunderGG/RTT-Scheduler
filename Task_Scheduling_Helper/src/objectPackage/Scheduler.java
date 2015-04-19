@@ -98,22 +98,8 @@ public class Scheduler
 		}
 		return resultTree;
 	}
-	/*
-	 * Safe to call from public
-	 */
-	public void updateContPoints()
-	{
-		controlPoints = calcContPoints(taskList);
-		Main.getGui().updateCtrlPts(controlPoints);
-	}
-	/*
-	 * Safe to call from public
-	 */
-	public void updateLCM()
-	{
-		tasksetLCM = calcLCM(taskList);
-		Main.getGui().updateLCM(tasksetLCM);
-	}
+
+
 
 	public long calcLCM(ArrayList<Task> tasks)
 	{
@@ -151,9 +137,20 @@ public class Scheduler
 		taskList.add(task);
 		
 		tasksetLCM = calcLCM(taskList);
-		controlPoints = calcContPoints(taskList);
+		Main.getGui().updateLCM(tasksetLCM);
 		
-		Main.getGui().addTaskToCB(task);
+		controlPoints = calcContPoints(taskList);
+		Main.getGui().updateCtrlPts(controlPoints);
+	}
+	public void removeTask(Task task)
+	{
+		taskList.remove(task);
+		
+		tasksetLCM = calcLCM(taskList);
+		Main.getGui().updateLCM(tasksetLCM);
+		
+		controlPoints = calcContPoints(taskList);
+		Main.getGui().updateCtrlPts(controlPoints);
 	}
 	
 	public policies getPolicy() {return policy;}

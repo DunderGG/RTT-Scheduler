@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
@@ -134,6 +135,8 @@ public class newTaskGUI extends JFrame
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
+				ArrayList<Task> taskList = Main.getScheduler().getTaskList();
+				
 				if(txtName.getText().equals(""))
 					JOptionPane.showMessageDialog(contentPane, "The task needs a name!");
 				else if(txtWCET.getText().equals(""))
@@ -142,6 +145,19 @@ public class newTaskGUI extends JFrame
 					JOptionPane.showMessageDialog(contentPane, "The task needs a period!");
 				else
 				{
+					/*
+					 * Don't allow two tasks with the same name
+					 */
+					for(Task task : taskList)
+					{
+						if(task.getName().equals(txtName.getText()))
+						{
+							JOptionPane.showMessageDialog(contentPane, "Duplicate names not allowed");
+							return;
+						}
+					}
+					
+					
 					if(txtDeadline.getText().equals(""))
 					{
 						Object[] options = {"YES", "NO"}; 
@@ -157,19 +173,19 @@ public class newTaskGUI extends JFrame
 					
 						if(ans == JOptionPane.YES_OPTION)
 						{
-							Main.getScheduler().addNewTask(new Task(txtName.getText(), (int)txtWCET.getValue(), (int)txtPeriod.getValue(), (int)txtPeriod.getValue()));
-					
-							Main.getScheduler().updateContPoints();
-							Main.getScheduler().updateLCM();
+							Task newTask = new Task(txtName.getText(), (int)txtWCET.getValue(), (int)txtPeriod.getValue(), (int)txtPeriod.getValue());
+							Main.getScheduler().addNewTask(newTask);
+
+							Main.getGui().addTaskToCB(newTask);
 							txtName.setText("");
 						}
 					}
 					else
 					{
-						Main.getScheduler().addNewTask(new Task(txtName.getText(), Integer.parseInt(txtWCET.getText()), Integer.parseInt(txtPeriod.getText()), Integer.parseInt(txtDeadline.getText())));
-						
-						Main.getScheduler().updateContPoints();
-						Main.getScheduler().updateLCM();
+						Task newTask = new Task(txtName.getText(), Integer.parseInt(txtWCET.getText()), Integer.parseInt(txtPeriod.getText()), Integer.parseInt(txtDeadline.getText()));
+						Main.getScheduler().addNewTask(newTask);
+
+						Main.getGui().addTaskToCB(newTask);
 						txtName.setText("");
 					}
 					
