@@ -16,13 +16,21 @@ package guiPackage;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.TreeSet;
 
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-
 import mainPackage.Main;
 import objectPackage.Task;
 
@@ -37,7 +45,8 @@ public class PdaGUI extends JFrame
 	final Container contentPane = getContentPane();
 	
 	private TreeSet<Integer> controlPoints;
-	private ArrayList<double[]> pdaResults;
+	
+	JTable table;
 	
 	public PdaGUI(ArrayList<Task> taskList)
 	{
@@ -45,8 +54,50 @@ public class PdaGUI extends JFrame
 		super("PDA Results");
 		//Set the position of the window to be of the same Y-position as, and just right of, the main window
 		this.setLocation(Main.getGui().getX()+Main.getGui().getWidth(), Main.getGui().getY());
-		
 		contentPane.setBackground(Color.BLACK);	
+		
+		
+		//Adding a menubar
+		JMenuBar menuBar = new JMenuBar();
+		this.setJMenuBar(menuBar);
+		
+		//Build the first menu
+		JMenu menu = new JMenu("File");
+		menu.setMnemonic(KeyEvent.VK_F);
+		menuBar.add(menu);
+		
+		//Build the submenu Export
+		JMenu subMenu = new JMenu("Export...");
+		menu.add(subMenu);
+		
+		//Adding the exporting item
+		JMenuItem menuItem = new JMenuItem("To xls");
+		menuItem.addActionListener(new ActionListener()
+		{
+			final Container contentPane = getContentPane();
+			@Override
+			public void actionPerformed(ActionEvent arg0)
+			{		
+				String input = JOptionPane.showInputDialog("Enter file name");
+				
+				if(input == null || input.equals(""))
+				{
+					JOptionPane.showMessageDialog(contentPane, "Cannot have an empty file name");
+				}
+				else
+				{
+					try
+					{
+						objectPackage.TableExporter.exportTable(table, new File(input + ".xls"));
+					} catch (IOException e)
+					{
+						e.printStackTrace();
+					}
+				}
+			}
+		});	
+		subMenu.add(menuItem);
+		
 		
 		controlPoints = Main.getScheduler().getControlPoints();
 		
@@ -92,14 +143,13 @@ public class PdaGUI extends JFrame
 		}
 		
 		
-		JTable table = new JTable(data, columnNames);
+		table = new JTable(data, columnNames);
 		TblRenderer tblRenderer = new TblRenderer();
 		table.setDefaultRenderer(Object.class, tblRenderer);
 		
 		JScrollPane sp = new JScrollPane(table);
 		table.setFillsViewportHeight(true);
 		contentPane.add(sp);
-		
 		
 		
 		/*

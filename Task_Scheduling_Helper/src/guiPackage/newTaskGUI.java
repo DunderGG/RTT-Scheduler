@@ -1,6 +1,5 @@
 package guiPackage;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.GridBagConstraints;
@@ -8,8 +7,6 @@ import java.awt.GridBagLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 
@@ -83,7 +80,6 @@ public class newTaskGUI extends JFrame
 		/*
 		 * TEXTAREAS
 		 */
-		
 		final JTextArea txtName = new JTextArea(1,10);
 		txtName.addFocusListener(new selectAllFocusAdapter());
 		TransferFocus.patch(txtName);
@@ -93,7 +89,7 @@ public class newTaskGUI extends JFrame
 		GBC.weighty = 1;
 		taskPropertiesPanel.add(txtName, GBC);
 		
-		
+		//Used in the JFormattedTextField
 		NumberFormat intFormat = NumberFormat.getIntegerInstance();
 		intFormat.setGroupingUsed(false);
 		intFormat.setParseIntegerOnly(true);
@@ -135,8 +131,10 @@ public class newTaskGUI extends JFrame
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
+				//Retrieve the most recent list of tasks
 				ArrayList<Task> taskList = Main.getScheduler().getTaskList();
 				
+				//Make sure the user doesn't try adding tasks without a name, WCET or period
 				if(txtName.getText().equals(""))
 					JOptionPane.showMessageDialog(contentPane, "The task needs a name!");
 				else if(txtWCET.getText().equals(""))
@@ -160,6 +158,7 @@ public class newTaskGUI extends JFrame
 					
 					if(txtDeadline.getText().equals(""))
 					{
+						//Show a dialog when the user hasn't specified a deadline
 						Object[] options = {"YES", "NO"}; 
 						int ans = JOptionPane.showOptionDialog(
 							contentPane, 
@@ -173,20 +172,34 @@ public class newTaskGUI extends JFrame
 					
 						if(ans == JOptionPane.YES_OPTION)
 						{
+							//Create a new Task with the specified values
 							Task newTask = new Task(txtName.getText(), (int)txtWCET.getValue(), (int)txtPeriod.getValue(), (int)txtPeriod.getValue());
+							
+							//Add the new task to the scheduler. Will cause it to update the control points, the LCM and add it to the list.
 							Main.getScheduler().addNewTask(newTask);
 
+							//Add the new task to the JComboBox inside the main GUI
 							Main.getGui().addTaskToCB(newTask);
+							
+							//Clear the name field and give it the focus
 							txtName.setText("");
+							txtName.requestFocusInWindow();
 						}
 					}
 					else
 					{
+						//Create a new Task with the specified values
 						Task newTask = new Task(txtName.getText(), Integer.parseInt(txtWCET.getText()), Integer.parseInt(txtPeriod.getText()), Integer.parseInt(txtDeadline.getText()));
+						
+						//Add the new task to the scheduler. Will cause it to update the control points, the LCM and add it to the list.
 						Main.getScheduler().addNewTask(newTask);
 
+						//Add the new task to the JComboBox inside the main GUI
 						Main.getGui().addTaskToCB(newTask);
+						
+						//Clear the name field and give it the focus
 						txtName.setText("");
+						txtName.requestFocusInWindow();
 					}
 					
 					
