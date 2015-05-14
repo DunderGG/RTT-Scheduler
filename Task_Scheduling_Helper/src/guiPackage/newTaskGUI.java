@@ -76,11 +76,13 @@ public class newTaskGUI extends JFrame
 		GBC.weighty = 1;
 		taskPropertiesPanel.add(lblDeadline, GBC);
 		
-		
+		final int[] i = new int[1];
+		i[0] = 1;
 		/*
 		 * TEXTAREAS
 		 */
 		final JTextArea txtName = new JTextArea(1,10);
+		txtName.setText("T_" + i[0]++);
 		txtName.addFocusListener(new selectAllFocusAdapter());
 		TransferFocus.patch(txtName);
 		GBC = new GridBagConstraints();
@@ -96,6 +98,7 @@ public class newTaskGUI extends JFrame
 		
 		//Use JFormattedTextFields with an Integer NumberFormat, so that we only accept Integers as input
 		final JFormattedTextField txtWCET = new JFormattedTextField(intFormat);
+		txtWCET.setText("100");
 		txtWCET.setColumns(5);
 		txtWCET.addFocusListener(new selectAllFocusAdapter());
 		TransferFocus.patch(txtWCET);
@@ -106,6 +109,7 @@ public class newTaskGUI extends JFrame
 		taskPropertiesPanel.add(txtWCET, GBC);
 		
 		final JFormattedTextField txtPeriod = new JFormattedTextField(intFormat);
+		txtPeriod.setText("500");
 		txtPeriod.setColumns(5);
 		txtPeriod.addFocusListener(new selectAllFocusAdapter());
 		TransferFocus.patch(txtPeriod);
@@ -116,6 +120,7 @@ public class newTaskGUI extends JFrame
 		taskPropertiesPanel.add(txtPeriod, GBC);
 		
 		final JFormattedTextField txtDeadline = new JFormattedTextField(intFormat);
+		txtDeadline.setText("500");
 		txtDeadline.setColumns(5);
 		txtDeadline.addFocusListener(new selectAllFocusAdapter());
 		TransferFocus.patch(txtDeadline);
@@ -182,7 +187,7 @@ public class newTaskGUI extends JFrame
 							Main.getGui().addTaskToCB(newTask);
 							
 							//Clear the name field and give it the focus
-							txtName.setText("");
+							txtName.setText("T_" + i[0]++);
 							txtName.requestFocusInWindow();
 						}
 					}
@@ -198,11 +203,9 @@ public class newTaskGUI extends JFrame
 						Main.getGui().addTaskToCB(newTask);
 						
 						//Clear the name field and give it the focus
-						txtName.setText("");
+						txtName.setText("T_" + i[0]++);
 						txtName.requestFocusInWindow();
 					}
-					
-					
 				}
 			}
 		});

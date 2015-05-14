@@ -2,7 +2,6 @@
  * 		AUTHOR:		David Bennehag (David.Bennehag@Gmail.com)
  * 		VERSION: 	1.0
  * 
- * 		COURSE: xxx (MPCSN, Chalmers University of Technology)
  *		
  *
  *		TODO  

@@ -40,7 +40,7 @@ import mainPackage.Main;
  * 				Future work would be to actually draw the schedule to give a more clear view of the results.
  * 
  * 	FINISHED:
- * 			Menu has started taking form, as well as textual results and a drowdown-list for choosing a task
+ * 			Menu has started taking form, as well as textual results and a dropdown-list for choosing a task
  */
 
 public class GUI extends JFrame
@@ -53,7 +53,7 @@ public class GUI extends JFrame
 	private JComboBox<Task> CBTasks;
 	//private ComboBoxRenderer CBRenderer;
 	
-	private JButton btnPDA, btnTextResults, btnDiagResults;
+	private JButton btnPDA, btnLatex, btnDiagResults;
 	
 	private JMenuBar menuBar;
 	private JMenu menu, subMenu;
@@ -126,15 +126,22 @@ public class GUI extends JFrame
 		GBC.fill = GridBagConstraints.BOTH;
 		taskPropertiesPanel.add(btnPDA, GBC);
 		
-		btnTextResults = new JButton("Tex");
-		btnTextResults.setBackground(contentPane.getBackground());
+		btnLatex = new JButton("Latex");
+		btnLatex.setBackground(contentPane.getBackground());
+		btnLatex.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				new LatexTableGUI(Main.getScheduler().getTaskList());
+			}
+		});
 		GBC = new GridBagConstraints();
 		GBC.gridx = 1;
 		GBC.gridy = 0;
 		GBC.weightx = 1;
 		GBC.weighty = 1;
 		GBC.fill = GridBagConstraints.BOTH;
-		taskPropertiesPanel.add(btnTextResults, GBC);
+		taskPropertiesPanel.add(btnLatex, GBC);
 		
 		btnDiagResults = new JButton("Dia");
 		btnDiagResults.setBackground(contentPane.getBackground());
